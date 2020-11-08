@@ -15,7 +15,7 @@ namespace TheHarborWPF
         private BindingList<Harbor> quayside2 = new BindingList<Harbor>();
         private List<Boat> anchoredBoats = new List<Boat>();
         public int rejectedBoats = 0;
-        string[,] savedBoats = new string[64, 9];
+        string[,] savedBoats = new string[64, 14];
         Random rnd = new Random();
 
         public MainWindow()
@@ -577,12 +577,12 @@ namespace TheHarborWPF
             {
                 if (b.MooringNumber == 64)
                 {
-                    tw.Write($"{b.MooringNumber},{b.Space1},{b.Space2},{b.Boat.Type},{b.Boat.ID},{b.Boat.Weight},{b.Boat.MaxSpeed},{b.Boat.SpecialProp},{b.Boat.Stays}");
+                    tw.Write($"{b.MooringNumber},{b.Space1},{b.Space2},{b.Boat.Type},{b.Boat.ID},{b.Boat2.ID},{b.Boat.Weight},{b.Boat2.Weight},{b.Boat.MaxSpeed},{b.Boat2.MaxSpeed},{b.Boat.SpecialProp},{b.Boat2.SpecialProp},{b.Boat.Stays},{b.Boat2.Stays}");
                     savedBoatsCounter2++;
                 }
                 else if (b.MooringNumber < 64)
                 {
-                    tw.WriteLine($"{b.MooringNumber},{b.Space1},{b.Space2},{b.Boat.Type},{b.Boat.ID},{b.Boat.Weight},{b.Boat.MaxSpeed},{b.Boat.SpecialProp},{b.Boat.Stays}");
+                    tw.WriteLine($"{b.MooringNumber},{b.Space1},{b.Space2},{b.Boat.Type},{b.Boat.ID},{b.Boat2.ID},{b.Boat.Weight},{b.Boat2.Weight},{b.Boat.MaxSpeed},{b.Boat2.MaxSpeed},{b.Boat.SpecialProp},{b.Boat2.SpecialProp},{b.Boat.Stays},{b.Boat2.Stays}");
                     savedBoatsCounter2++;
                 }
             }
@@ -612,13 +612,27 @@ namespace TheHarborWPF
                 {
                     for (int t = 0; t <= 64 - 1; t++)
                     {
-                        if (h.MooringNumber == Convert.ToInt32(savedBoats[t, 0]) && savedBoats[t, 3] == "Motorboat")
+                        if (h.MooringNumber == Convert.ToInt32(savedBoats[t, 0]) && savedBoats[t, 3] == "Rowboat")
+                        {
+                            h.MooringNumber = int.Parse(savedBoats[t, 0]);
+                            h.Space1 = bool.Parse(savedBoats[t, 1]);
+                            h.Boat = new Rowboat("Rowboat", savedBoats[t, 4], int.Parse(savedBoats[t, 6]), int.Parse(savedBoats[t, 8]), 2, savedBoats[t, 10], int.Parse(savedBoats[t, 12]));
+                            anchoredboats.Add(h.Boat);
+
+                            if (savedBoats[t, 2] == "False")
+                            {
+                                h.Space2 = false;
+                                h.Boat2 = new Rowboat("Rowboat", savedBoats[t, 5], int.Parse(savedBoats[t, 7]), int.Parse(savedBoats[t, 9]), 2, savedBoats[t, 11], int.Parse(savedBoats[t, 13]));
+                                anchoredboats.Add(h.Boat2);
+                            }
+                        }
+                        else if (h.MooringNumber == Convert.ToInt32(savedBoats[t, 0]) && savedBoats[t, 3] == "Motorboat")
                         {
                             h.MooringNumber = int.Parse(savedBoats[t, 0]);
                             h.Space1 = bool.Parse(savedBoats[t, 1]);
                             h.Space2 = bool.Parse(savedBoats[t, 2]);
-                            h.Boat = new Motorboat("Motorboat", savedBoats[t, 4], int.Parse(savedBoats[t, 5]), int.Parse(savedBoats[t, 6]), 2, savedBoats[t, 7], int.Parse(savedBoats[t, 8]));
-                            h.Boat2 = new Motorboat("Motorboat", savedBoats[t, 4], int.Parse(savedBoats[t, 5]), int.Parse(savedBoats[t, 6]), 2, savedBoats[t, 7], int.Parse(savedBoats[t, 8]));
+                            h.Boat = new Motorboat("Motorboat", savedBoats[t, 4], int.Parse(savedBoats[t, 6]), int.Parse(savedBoats[t, 8]), 2, savedBoats[t, 10], int.Parse(savedBoats[t, 12]));
+                            h.Boat2 = new Motorboat("Motorboat", savedBoats[t, 5], int.Parse(savedBoats[t, 7]), int.Parse(savedBoats[t, 9]), 2, savedBoats[t, 11], int.Parse(savedBoats[t, 13]));
                             anchoredboats.Add(h.Boat);
                             anchoredboats.Add(h.Boat2);
                         }
@@ -627,8 +641,8 @@ namespace TheHarborWPF
                             h.MooringNumber = int.Parse(savedBoats[t, 0]);
                             h.Space1 = bool.Parse(savedBoats[t, 1]);
                             h.Space2 = bool.Parse(savedBoats[t, 2]);
-                            h.Boat = new Sailboat("Sailboat", savedBoats[t, 4], int.Parse(savedBoats[t, 5]), int.Parse(savedBoats[t, 6]), 2, savedBoats[t, 7], int.Parse(savedBoats[t, 8]));
-                            h.Boat2 = new Sailboat("Sailboat", savedBoats[t, 4], int.Parse(savedBoats[t, 5]), int.Parse(savedBoats[t, 6]), 2, savedBoats[t, 7], int.Parse(savedBoats[t, 8]));
+                            h.Boat = new Sailboat("Sailboat", savedBoats[t, 4], int.Parse(savedBoats[t, 6]), int.Parse(savedBoats[t, 8]), 2, savedBoats[t, 10], int.Parse(savedBoats[t, 12]));
+                            h.Boat2 = new Sailboat("Sailboat", savedBoats[t, 5], int.Parse(savedBoats[t, 7]), int.Parse(savedBoats[t, 9]), 2, savedBoats[t, 11], int.Parse(savedBoats[t, 13]));
                             anchoredboats.Add(h.Boat);
                             anchoredboats.Add(h.Boat2);
                         }
@@ -637,8 +651,8 @@ namespace TheHarborWPF
                             h.MooringNumber = int.Parse(savedBoats[t, 0]);
                             h.Space1 = bool.Parse(savedBoats[t, 1]);
                             h.Space2 = bool.Parse(savedBoats[t, 2]);
-                            h.Boat = new Cargoship("Cargoship", savedBoats[t, 4], int.Parse(savedBoats[t, 5]), int.Parse(savedBoats[t, 6]), 2, savedBoats[t, 7], int.Parse(savedBoats[t, 8]));
-                            h.Boat2 = new Cargoship("Cargoship", savedBoats[t, 4], int.Parse(savedBoats[t, 5]), int.Parse(savedBoats[t, 6]), 2, savedBoats[t, 7], int.Parse(savedBoats[t, 8]));
+                            h.Boat = new Cargoship("Cargoship", savedBoats[t, 4], int.Parse(savedBoats[t, 6]), int.Parse(savedBoats[t, 8]), 2, savedBoats[t, 10], int.Parse(savedBoats[t, 12]));
+                            h.Boat2 = new Cargoship("Cargoship", savedBoats[t, 5], int.Parse(savedBoats[t, 7]), int.Parse(savedBoats[t, 9]), 2, savedBoats[t, 11], int.Parse(savedBoats[t, 13]));
                             anchoredboats.Add(h.Boat2);
                         }
                         else if (h.MooringNumber == Convert.ToInt32(savedBoats[t, 0]) && savedBoats[t, 3] == "Catamaran")
@@ -646,8 +660,8 @@ namespace TheHarborWPF
                             h.MooringNumber = int.Parse(savedBoats[t, 0]);
                             h.Space1 = bool.Parse(savedBoats[t, 1]);
                             h.Space2 = bool.Parse(savedBoats[t, 2]);
-                            h.Boat = new Catamaran("Catamaran", savedBoats[t, 4], int.Parse(savedBoats[t, 5]), int.Parse(savedBoats[t, 6]), 2, savedBoats[t, 7], int.Parse(savedBoats[t, 8]));
-                            h.Boat2 = new Catamaran("Catamaran", savedBoats[t, 4], int.Parse(savedBoats[t, 5]), int.Parse(savedBoats[t, 6]), 2, savedBoats[t, 7], int.Parse(savedBoats[t, 8]));
+                            h.Boat = new Catamaran("Catamaran", savedBoats[t, 4], int.Parse(savedBoats[t, 6]), int.Parse(savedBoats[t, 8]), 2, savedBoats[t, 10], int.Parse(savedBoats[t, 12]));
+                            h.Boat2 = new Catamaran("Catamaran", savedBoats[t, 5], int.Parse(savedBoats[t, 7]), int.Parse(savedBoats[t, 9]), 2, savedBoats[t, 11], int.Parse(savedBoats[t, 13]));
                             anchoredboats.Add(h.Boat);
                             anchoredboats.Add(h.Boat2);
                         }
